@@ -68,6 +68,7 @@ Press Play. Hide. Listen. Run.
 
 🧩 Core Systems (real snippets)
 🎮 Player — movement, fear-based speed, physics grab
+```
 // PlayerBehaviour.cs (selected)
 void CamRotationAndMovement()
 {
@@ -103,8 +104,10 @@ Crouch / Sprint also change footstep loudness & noise radius:
 stepVolume = 0.3f; playerVolumeCollider.radius = 0.75f;
 // sprint
 stepVolume = 1f;   playerVolumeCollider.radius = 4f;
+```
 
 👣 Footsteps — random-pitch, rate from player
+```
 // Footsteps.cs (selected)
 if ((Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && GameManager.instance.outTaxi)
 {
@@ -116,8 +119,9 @@ if ((Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && Game
         stepCoolDown = player.stepRate; // sprint/crouch tweak this
     }
 }
-
+```
 🧠 AI — Patrol ↔ Follow, chase audio, capture sequence
+```
 // PatrolAndFollow.cs (selected)
 enum AIstates { PATROL, FOLLOW }
 void HandlePatrolState()
@@ -133,8 +137,9 @@ void HandleFollowState()
     if (toPlayer.sqrMagnitude >= maxDistance * maxDistance) agent.SetDestination(playerPos.position);
     else StartCoroutine(GrabAndKill()); // stop agent, play anim, take camera
 }
-
+```
 🔦 Spotlight Vision — multi-ray cone + walls occlusion
+```
 // SpotlightController.cs (selected)
 for (float ax = -angle + addAngleX; ax <= angle + addAngleX; ax += seperation)
 for (float ay = -angle + addAngleY; ay <= angle + addAngleY; ay += seperation)
@@ -155,15 +160,16 @@ if (playerInLightRay)
     priestVision.spotlightView = priestVision.playerInView = true;
     FearManager.instance.ModifyFear(50f * Time.deltaTime); // fear ramps while seen
 }
-
+```
 🎧 Audio Mixer — logarithmic sliders (no clipping)
+```
 // AudioManager.cs (selected)
 public void SetSoundVolume(float v)
 {
     v = Mathf.Clamp(v, 0.0001f, 1f);
     audioMixer.SetFloat("Sounds", Mathf.Log10(v) * 20f);
 }
-
+```
 🧠 Design Notes
 
 Sight beats Noise: direct line-of-sight triggers chase; noise helps lure/pressure
